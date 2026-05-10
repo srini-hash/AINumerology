@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { buildGenZNarrative } from "@/lib/genZNarrative";
 import { calculateProfile, compareProfiles } from "@/lib/numerology";
 
 export async function POST(req: Request) {
@@ -17,5 +18,11 @@ export async function POST(req: Request) {
   const profileB = calculateProfile(personB);
   const comparison = compareProfiles(profileA, profileB);
 
-  return NextResponse.json({ profileA, profileB, comparison });
+  return NextResponse.json({
+    profileA,
+    profileB,
+    genZA: buildGenZNarrative(profileA),
+    genZB: buildGenZNarrative(profileB),
+    comparison,
+  });
 }

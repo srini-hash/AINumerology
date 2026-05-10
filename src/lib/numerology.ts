@@ -310,29 +310,6 @@ export function calculateProfile(input: ProfileInput): NumerologyProfile {
   };
 }
 
-export function fallbackInterpretation(profile: NumerologyProfile) {
-  const tones: Record<number, string> = {
-    1: "independent starter",
-    2: "harmonizer and connector",
-    3: "creative communicator",
-    4: "practical builder",
-    5: "adaptive explorer",
-    6: "supportive nurturer",
-    7: "analytical seeker",
-    8: "ambitious organizer",
-    9: "big-picture humanitarian",
-    11: "intuitive visionary",
-    22: "master architect",
-    33: "teacher-healer",
-  };
-  return [
-    `Your Life Path ${profile.lifePath} points to an ${tones[profile.lifePath] || "evolving"} energy.`,
-    `Expression ${profile.expression} describes how you tend to show up in public and work.`,
-    `Soul Urge ${profile.soulUrge} reflects your private motivation and emotional fuel.`,
-    `Personality ${profile.personality} and Birthday ${profile.birthday} add texture to your social and daily style.`,
-  ].join(" ");
-}
-
 export function compareProfiles(a: NumerologyProfile, b: NumerologyProfile) {
   const aNums = [a.lifePath, a.expression, a.soulUrge, a.personality, a.birthday];
   const bNums = [b.lifePath, b.expression, b.soulUrge, b.personality, b.birthday];

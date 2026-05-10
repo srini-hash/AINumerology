@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { buildInterpretation } from "@/lib/ai";
+import { buildGenZNarrative } from "@/lib/genZNarrative";
 import { analyzeInternalDissonance, calculateProfile } from "@/lib/numerology";
 import { shareStore } from "@/lib/store";
 
@@ -19,5 +20,11 @@ export async function POST(req: Request) {
   const shareId = randomUUID().replace(/-/g, "").slice(0, 12);
   shareStore.set(shareId, { profile, interpretation, createdAt: new Date().toISOString() });
 
-  return NextResponse.json({ profile, internalDissonance, interpretation, shareId });
+  return NextResponse.json({
+    profile,
+    genZ: buildGenZNarrative(profile),
+    internalDissonance,
+    interpretation,
+    shareId,
+  });
 }

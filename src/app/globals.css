@@ -160,3 +160,214 @@ pre {
 .nav-back a:hover {
   text-decoration: underline;
 }
+
+/* Gen Z vibes panels (/app) */
+.vibes-root {
+  margin-top: 20px;
+}
+
+.vibes-label {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #22d3ee;
+  font-weight: 700;
+}
+
+.vibes-hero {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #2a2f52;
+}
+
+.vibes-headline {
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  line-height: 1.2;
+  font-weight: 800;
+  background: linear-gradient(110deg, #e9d5ff, #a5f3fc, #c4b5fd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vibes-meta {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #8b95b8;
+  line-height: 1.45;
+}
+
+.vibes-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .vibes-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.vibes-card {
+  margin: 0;
+  padding: 14px 14px 16px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #141830 0%, #101228 100%);
+  border: 1px solid #2e3558;
+  border-left-width: 4px;
+}
+
+.vibes-card--lp {
+  border-left-color: #a78bfa;
+}
+.vibes-card--ex {
+  border-left-color: #22d3ee;
+}
+.vibes-card--su {
+  border-left-color: #f472b6;
+}
+.vibes-card--soc {
+  border-left-color: #34d399;
+}
+
+.vibes-card-title {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f7f8ff;
+}
+
+.vibes-card-tag {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: #94a3c8;
+}
+
+.vibes-card-body {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #d4d9f1;
+}
+
+.vibes-ai-remix {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px dashed #3d4575;
+  background: rgba(15, 19, 48, 0.6);
+}
+
+.vibes-ai-remix-title {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a78bfa;
+}
+
+.vibes-ai-remix-body {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #c8cdf0;
+  white-space: pre-wrap;
+}
+
+.vibes-dual {
+  display: grid;
+  gap: 28px;
+}
+
+@media (min-width: 900px) {
+  .vibes-dual {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .vibes-dual .vibes-root {
+    margin-top: 0;
+  }
+}
+
+.vibes-compare-summary {
+  margin: 16px 0 20px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #12162e;
+  border: 1px solid #323866;
+}
+
+.vibes-compare-summary-title {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.vibes-compare-dynamic {
+  margin: 0 0 14px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #d4d9f1;
+}
+
+.vibes-scores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.vibes-scores dt {
+  margin: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8b95b8;
+}
+
+.vibes-scores dd {
+  margin: 4px 0 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #a5f3fc;
+}
+
+.vibes-raw {
+  margin-top: 18px;
+}
+
+.vibes-raw summary {
+  cursor: pointer;
+  color: #94a3c8;
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+}
+
+.vibes-raw pre {
+  margin-top: 8px;
+  font-size: 0.78rem;
+}
+
+.vibes-error {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fecaca;
+}
+
+.vibes-fallback {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #94a3c8;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

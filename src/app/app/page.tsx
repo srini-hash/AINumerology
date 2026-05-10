@@ -1,9 +1,63 @@
 "use client";
 
+import { ComparisonSummary, DualGenZPanels, GenZVibesPanel } from "@/components/GenZVibes";
+import type { GenZNarrative } from "@/lib/genZNarrative";
+import type { NumerologyProfile } from "@/lib/numerology";
 import Link from "next/link";
 import { useState } from "react";
 
 type JsonValue = Record<string, unknown> | null;
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+
+function readingHasVibes(data: JsonValue): data is JsonValue & {
+  genZ: GenZNarrative;
+  profile: NumerologyProfile;
+  interpretation?: string;
+} {
+  return (
+    isRecord(data) &&
+    !("error" in data) &&
+    "genZ" in data &&
+    "profile" in data &&
+    isRecord(data.genZ)
+  );
+}
+
+function compareHasVibes(data: JsonValue): data is JsonValue & {
+  genZA: GenZNarrative;
+  genZB: GenZNarrative;
+  profileA: NumerologyProfile;
+  profileB: NumerologyProfile;
+  comparison: Record<string, unknown>;
+} {
+  return (
+    isRecord(data) &&
+    !("error" in data) &&
+    "genZA" in data &&
+    "genZB" in data &&
+    "profileA" in data &&
+    "profileB" in data &&
+    isRecord(data.genZA) &&
+    isRecord(data.genZB)
+  );
+}
+
+function shareHasVibes(data: JsonValue): data is JsonValue & {
+  genZ: GenZNarrative;
+  profile: NumerologyProfile;
+  interpretation?: string;
+} {
+  return (
+    isRecord(data) &&
+    !("error" in data) &&
+    "genZ" in data &&
+    "profile" in data &&
+    isRecord(data.genZ)
+  );
+}
 
 async function postJSON(url: string, payload: unknown) {
   const res = await fetch(url, {
@@ -71,7 +125,25 @@ export default function ToolPage() {
             {loading === "reading" ? "Loading..." : "Get Reading"}
           </button>
         </form>
-        <pre>{readingData ? JSON.stringify(readingData, null, 2) : "No data yet."}</pre>
+
+        {readingData && "error" in readingData ? (
+          <p className="vibes-error">{(readingData as { error: string }).error}</p>
+        ) : null}
+
+        {readingData && readingHasVibes(readingData) ? (
+          <GenZVibesPanel
+            genZ={readingData.genZ}
+            profile={readingData.profile}
+            interpretation={readingData.interpretation}
+          />
+        ) : readingData && isRecord(readingData) && !("error" in readingData) && !readingHasVibes(readingData) ? (
+          <p className="vibes-fallback">This response has no vibes payload. Try again after redeploy.</p>
+        ) : null}
+
+        <details className="vibes-raw">
+          <summary>Technical details (JSON)</summary>
+          <pre>{readingData ? JSON.stringify(readingData, null, 2) : "No data yet."}</pre>
+        </details>
       </section>
 
       <section className="card">
@@ -116,7 +188,38 @@ export default function ToolPage() {
             {loading === "compare" ? "Loading..." : "Compare"}
           </button>
         </form>
-        <pre>{compareData ? JSON.stringify(compareData, null, 2) : "No data yet."}</pre>
+
+        {compareData && "error" in compareData ? (
+          <p className="vibes-error">{(compareData as { error: string }).error}</p>
+        ) : null}
+
+        {compareData && compareHasVibes(compareData) ? (
+          <>
+            <ComparisonSummary
+              comparison={
+                compareData.comparison as {
+                  score: number;
+                  harmonyAdjustedScore?: number;
+                  overlap: number;
+                  dynamic: string;
+                }
+              }
+            />
+            <DualGenZPanels
+              genZA={compareData.genZA}
+              genZB={compareData.genZB}
+              profileA={compareData.profileA}
+              profileB={compareData.profileB}
+            />
+          </>
+        ) : compareData && isRecord(compareData) && !("error" in compareData) && !compareHasVibes(compareData) ? (
+          <p className="vibes-fallback">This response has no comparison vibes. Try again after redeploy.</p>
+        ) : null}
+
+        <details className="vibes-raw">
+          <summary>Technical details (JSON)</summary>
+          <pre>{compareData ? JSON.stringify(compareData, null, 2) : "No data yet."}</pre>
+        </details>
       </section>
 
       <section className="card">
@@ -143,7 +246,25 @@ export default function ToolPage() {
         >
           {loading === "share" ? "Loading..." : "Load Share"}
         </button>
-        <pre>{shareData ? JSON.stringify(shareData, null, 2) : "No data yet."}</pre>
+
+        {shareData && "error" in shareData ? (
+          <p className="vibes-error">{(shareData as { error: string }).error}</p>
+        ) : null}
+
+        {shareData && shareHasVibes(shareData) ? (
+          <GenZVibesPanel
+            genZ={shareData.genZ}
+            profile={shareData.profile}
+            interpretation={shareData.interpretation}
+          />
+        ) : shareData && !("error" in shareData) ? (
+          <p className="vibes-fallback">No vibes payload on this share.</p>
+        ) : null}
+
+        <details className="vibes-raw">
+          <summary>Technical details (JSON)</summary>
+          <pre>{shareData ? JSON.stringify(shareData, null, 2) : "No data yet."}</pre>
+        </details>
       </section>
     </main>
   );
