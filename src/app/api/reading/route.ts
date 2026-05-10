@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { buildInterpretation } from "@/lib/ai";
-import { calculateProfile } from "@/lib/numerology";
+import { analyzeInternalDissonance, calculateProfile } from "@/lib/numerology";
 import { shareStore } from "@/lib/store";
 
 export async function POST(req: Request) {
@@ -14,9 +14,10 @@ export async function POST(req: Request) {
   }
 
   const profile = calculateProfile({ fullName, dob });
+  const internalDissonance = analyzeInternalDissonance(profile);
   const interpretation = await buildInterpretation(profile);
   const shareId = randomUUID().replace(/-/g, "").slice(0, 12);
   shareStore.set(shareId, { profile, interpretation, createdAt: new Date().toISOString() });
 
-  return NextResponse.json({ profile, interpretation, shareId });
+  return NextResponse.json({ profile, internalDissonance, interpretation, shareId });
 }
