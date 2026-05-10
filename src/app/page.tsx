@@ -1,137 +1,41 @@
-"use client";
+import Link from "next/link";
+import type { Metadata } from "next";
 
-import { useState } from "react";
+export const metadata: Metadata = {
+  title: "Soul Math — Numerology insights & comparison",
+  description:
+    "Discover your core numbers and compare compatibility with someone you care about. Free to try.",
+};
 
-type JsonValue = Record<string, unknown> | null;
-
-async function postJSON(url: string, payload: unknown) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Request failed");
-  return data;
-}
-
-export default function HomePage() {
-  const [readingData, setReadingData] = useState<JsonValue>(null);
-  const [compareData, setCompareData] = useState<JsonValue>(null);
-  const [shareData, setShareData] = useState<JsonValue>(null);
-  const [shareId, setShareId] = useState("");
-  const [loading, setLoading] = useState<string | null>(null);
-
+export default function LandingPage() {
   return (
-    <main className="container">
-      <h1>AI Numerology</h1>
-      <p className="sub">Next.js MVP with reading, comparison, and share endpoints.</p>
+    <main className="container landing">
+      <header className="landing-hero">
+        <p className="landing-eyebrow">Soul Math</p>
+        <h1>Numbers that describe your path—and how you connect with others.</h1>
+        <p className="landing-lede">
+          Get your free core numerology reading, generate a comparison card for two people, and share
+          results in one place.
+        </p>
+        <Link href="/app" className="cta-button">
+          Open my free core numbers + comparison card
+        </Link>
+        <p className="landing-note">No account required for the MVP experience.</p>
+      </header>
 
-      <section className="card">
-        <h2>Reading</h2>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const form = new FormData(e.currentTarget);
-            setLoading("reading");
-            try {
-              const data = await postJSON("/api/reading", {
-                fullName: form.get("fullName"),
-                dob: form.get("dob"),
-              });
-              setReadingData(data);
-              if (data.shareId) setShareId(String(data.shareId));
-            } catch (err) {
-              setReadingData({ error: (err as Error).message });
-            } finally {
-              setLoading(null);
-            }
-          }}
-        >
-          <label>
-            Full Name
-            <input name="fullName" type="text" required />
-          </label>
-          <label>
-            Date of Birth
-            <input name="dob" type="date" required />
-          </label>
-          <button type="submit" disabled={loading === "reading"}>
-            {loading === "reading" ? "Loading..." : "Get Reading"}
-          </button>
-        </form>
-        <pre>{readingData ? JSON.stringify(readingData, null, 2) : "No data yet."}</pre>
-      </section>
-
-      <section className="card">
-        <h2>Comparison</h2>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const form = new FormData(e.currentTarget);
-            setLoading("compare");
-            try {
-              const data = await postJSON("/api/compare", {
-                personA: { fullName: form.get("aName"), dob: form.get("aDob") },
-                personB: { fullName: form.get("bName"), dob: form.get("bDob") },
-              });
-              setCompareData(data);
-            } catch (err) {
-              setCompareData({ error: (err as Error).message });
-            } finally {
-              setLoading(null);
-            }
-          }}
-        >
-          <div className="grid">
-            <label>
-              A Name
-              <input name="aName" type="text" required />
-            </label>
-            <label>
-              A DOB
-              <input name="aDob" type="date" required />
-            </label>
-            <label>
-              B Name
-              <input name="bName" type="text" required />
-            </label>
-            <label>
-              B DOB
-              <input name="bDob" type="date" required />
-            </label>
-          </div>
-          <button type="submit" disabled={loading === "compare"}>
-            {loading === "compare" ? "Loading..." : "Compare"}
-          </button>
-        </form>
-        <pre>{compareData ? JSON.stringify(compareData, null, 2) : "No data yet."}</pre>
-      </section>
-
-      <section className="card">
-        <h2>Shared Reading</h2>
-        <label>
-          Share ID
-          <input value={shareId} onChange={(e) => setShareId(e.target.value)} />
-        </label>
-        <button
-          type="button"
-          onClick={async () => {
-            if (!shareId.trim()) return;
-            setLoading("share");
-            try {
-              const res = await fetch(`/api/share/${shareId.trim()}`);
-              const data = await res.json();
-              setShareData(data);
-            } finally {
-              setLoading(null);
-            }
-          }}
-          disabled={loading === "share"}
-        >
-          {loading === "share" ? "Loading..." : "Load Share"}
-        </button>
-        <pre>{shareData ? JSON.stringify(shareData, null, 2) : "No data yet."}</pre>
+      <section className="landing-features card">
+        <h2 className="landing-features-title">What you can do</h2>
+        <ul className="landing-list">
+          <li>
+            <strong>Personal reading</strong> — name and birth date mapped to core numbers.
+          </li>
+          <li>
+            <strong>Comparison</strong> — see two profiles side by side.
+          </li>
+          <li>
+            <strong>Share</strong> — load readings with a share ID when you need them.
+          </li>
+        </ul>
       </section>
     </main>
   );

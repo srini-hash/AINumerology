@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Numerology",
-  description: "AI numerology with shareable social comparisons",
+  title: "Soul Math",
+  description: "Numerology readings, comparison cards, and shareable insights.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
