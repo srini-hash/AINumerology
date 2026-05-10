@@ -54,6 +54,10 @@ Without this key, the app uses a local fallback interpretation.
 - Optional AI interpretation hook in `src/lib/ai.ts`
 - Frontend test UI in `src/app/page.tsx`
 
+## Deploy (GitHub + Vercel + soulmath.in)
+
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for pushing to GitHub, creating a Vercel project, and pointing your GoDaddy domain.
+
 ## Next upgrade phase
 
 After this runs, we can add:
