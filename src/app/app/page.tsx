@@ -16,6 +16,13 @@ async function postJSON(url: string, payload: unknown) {
   return data;
 }
 
+async function getJSON(url: string) {
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Request failed");
+  return data;
+}
+
 export default function ToolPage() {
   const [readingData, setReadingData] = useState<JsonValue>(null);
   const [compareData, setCompareData] = useState<JsonValue>(null);
@@ -89,19 +96,19 @@ export default function ToolPage() {
         >
           <div className="grid">
             <label>
-              A Name
+              Person A
               <input name="aName" type="text" required />
             </label>
             <label>
-              A DOB
+              Person A Date of Birth
               <input name="aDob" type="date" required />
             </label>
             <label>
-              B Name
+              Person B
               <input name="bName" type="text" required />
             </label>
             <label>
-              B DOB
+              Person B Date of Birth
               <input name="bDob" type="date" required />
             </label>
           </div>
@@ -124,9 +131,10 @@ export default function ToolPage() {
             if (!shareId.trim()) return;
             setLoading("share");
             try {
-              const res = await fetch(`/api/share/${shareId.trim()}`);
-              const data = await res.json();
+              const data = await getJSON(`/api/share/${shareId.trim()}`);
               setShareData(data);
+            } catch (err) {
+              setShareData({ error: (err as Error).message });
             } finally {
               setLoading(null);
             }
